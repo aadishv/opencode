@@ -572,6 +572,9 @@ export namespace ProviderTransform {
   export function providerOptions(model: Provider.Model, options: { [x: string]: any }) {
     switch (model.api.npm) {
       case "@ai-sdk/github-copilot":
+        return {
+          ["copilot" as string]: options,
+        }
       case "@ai-sdk/openai":
       case "@ai-sdk/azure":
         return {
