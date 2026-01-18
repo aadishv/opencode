@@ -36,6 +36,11 @@ import {
 import type { MetadataExtractor } from './openai-compatible-metadata-extractor';
 import { prepareTools } from './openai-compatible-prepare-tools';
 
+import { appendFileSync } from "node:fs";
+const log = (s: string) => {
+  appendFileSync("/tmp/log.txt", s + "\n");
+}
+
 export type OpenAICompatibleChatConfig = {
   provider: string;
   headers: () => Record<string, string | undefined>;
@@ -657,6 +662,7 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV2 {
           },
 
           flush(controller) {
+            log(`opaque: ${reasoningOpaque}`);
             if (isActiveReasoning) {
               controller.enqueue({
                 type: 'reasoning-end',

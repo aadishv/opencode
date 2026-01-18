@@ -6,6 +6,11 @@ import {
 import type { OpenAICompatibleChatPrompt } from './openai-compatible-api-types';
 import { convertToBase64 } from '@ai-sdk/provider-utils';
 
+import { appendFileSync } from "node:fs";
+const log = (s: string) => {
+  appendFileSync("/tmp/log.txt", s + "\n");
+}
+
 // Copilot-specific cache control added to all messages for prompt caching
 const CACHE_CONTROL = { copilot_cache_control: { type: 'ephemeral' as const } };
 
@@ -93,6 +98,7 @@ export function convertToOpenAICompatibleChatMessages(
         let text = '';
         let reasoningText: string | undefined;
         let reasoningOpaque: string | undefined;
+        log(`Parsing back: ${reasoningOpaque}`)
         const toolCalls: Array<{
           id: string;
           type: 'function';
